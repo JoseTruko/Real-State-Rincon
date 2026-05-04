@@ -3,8 +3,6 @@
 -- Ejecutar en el SQL Editor de Supabase
 -- ============================================================
 
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
 -- ============================================================
 -- ENUMS
 -- ============================================================
@@ -19,7 +17,7 @@ CREATE TYPE commission_status AS ENUM ('none', 'pending', 'confirmed', 'paid');
 -- COMMUNITIES
 -- ============================================================
 CREATE TABLE communities (
-  id             UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id             UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   slug           TEXT UNIQUE NOT NULL,
   name_en        TEXT NOT NULL,
   name_es        TEXT NOT NULL,
@@ -39,7 +37,7 @@ CREATE INDEX idx_communities_active ON communities(active);
 -- AGENTS
 -- ============================================================
 CREATE TABLE agents (
-  id               UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id               UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   slug             TEXT UNIQUE NOT NULL,
   full_name        TEXT NOT NULL,
   photo_url        TEXT NOT NULL DEFAULT '',
@@ -64,7 +62,7 @@ CREATE INDEX idx_agents_active ON agents(active);
 -- PROPERTIES
 -- ============================================================
 CREATE TABLE properties (
-  id                  UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   slug_en             TEXT UNIQUE NOT NULL,
   slug_es             TEXT UNIQUE NOT NULL,
   title_en            TEXT NOT NULL,
@@ -121,7 +119,7 @@ CREATE TRIGGER trg_properties_updated_at
 -- PROPERTY_IMAGES
 -- ============================================================
 CREATE TABLE property_images (
-  id          UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   property_id UUID NOT NULL REFERENCES properties(id) ON DELETE CASCADE,
   url         TEXT NOT NULL,
   alt_text    TEXT NOT NULL DEFAULT '',
@@ -135,7 +133,7 @@ CREATE INDEX idx_property_images_property ON property_images(property_id, sort_o
 -- BLOG_POSTS
 -- ============================================================
 CREATE TABLE blog_posts (
-  id               UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id               UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   slug_en          TEXT UNIQUE NOT NULL,
   slug_es          TEXT UNIQUE NOT NULL,
   title_en         TEXT NOT NULL,
@@ -163,7 +161,7 @@ CREATE INDEX idx_blog_posts_published_at ON blog_posts(published_at DESC);
 -- CONTACTS (leads)
 -- ============================================================
 CREATE TABLE contacts (
-  id                UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   property_id       UUID REFERENCES properties(id) ON DELETE SET NULL,
   agent_id          UUID REFERENCES agents(id) ON DELETE SET NULL,
   name              TEXT NOT NULL,
@@ -187,7 +185,7 @@ CREATE INDEX idx_contacts_created_at ON contacts(created_at DESC);
 -- SITE_CONFIG
 -- ============================================================
 CREATE TABLE site_config (
-  id    UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id    UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   key   TEXT UNIQUE NOT NULL,
   value JSONB NOT NULL DEFAULT 'null'
 );
