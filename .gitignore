@@ -1,0 +1,15 @@
+# IDE / tools
+.claude/
+.kiro/
+.vscode/
+
+# Next.js (handled by rincon-realty/.gitignore but just in case)
+rincon-realty/.next/
+rincon-realty/node_modules/
+rincon-realty/.env
+rincon-realty/.env.local
+rincon-realty/.env*.local
+
+# OS
+.DS_Store
+Thumbs.db
