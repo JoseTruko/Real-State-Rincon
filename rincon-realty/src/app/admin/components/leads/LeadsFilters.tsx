@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useCallback } from 'react'
-import type { Agent, ContactStatus } from '@/types'
+import type { Agent } from '@/types'
 
 interface LeadsFiltersProps {
   agents: Pick<Agent, 'id' | 'full_name'>[]
@@ -63,6 +63,7 @@ export default function LeadsFilters({ agents, currentFilters }: LeadsFiltersPro
             className="text-sm rounded-lg border border-neutral-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
           >
             <option value="">Todas</option>
+            <option value="seller">Vendedor</option>
             <option value="form">Formulario</option>
             <option value="whatsapp">WhatsApp</option>
             <option value="email_reveal">Email reveal</option>

@@ -8,9 +8,17 @@ interface CompareButtonProps {
   propertyId: string
   propertyTitle: string
   className?: string
+  showLabel?: boolean
+  locale?: 'en' | 'es'
 }
 
-export default function CompareButton({ propertyId, propertyTitle, className }: CompareButtonProps) {
+export default function CompareButton({
+  propertyId,
+  propertyTitle,
+  className,
+  showLabel = false,
+  locale = 'en',
+}: CompareButtonProps) {
   const { isInCompare, addToCompare, removeFromCompare, isFull } = useCompare()
   const inCompare = isInCompare(propertyId)
 
@@ -20,11 +28,30 @@ export default function CompareButton({ propertyId, propertyTitle, className }: 
     if (inCompare) {
       removeFromCompare(propertyId)
     } else {
-      const added = addToCompare({ id: propertyId, title: propertyTitle })
-      if (!added) {
-        // Could show a toast here — limit reached
-      }
+      addToCompare({ id: propertyId, title: propertyTitle })
     }
+  }
+
+  if (showLabel) {
+    return (
+      <button
+        onClick={handleClick}
+        disabled={!inCompare && isFull}
+        className={cn(
+          'flex items-center justify-center gap-2 rounded-lg text-sm font-medium transition-all duration-200',
+          'disabled:opacity-40 disabled:cursor-not-allowed',
+          inCompare
+            ? 'bg-primary/10 text-primary border border-primary/30 hover:bg-primary/20'
+            : 'bg-neutral-100 text-neutral-600 border border-neutral-200 hover:bg-neutral-200',
+          className,
+        )}
+      >
+        <GitCompare className="h-4 w-4 shrink-0" />
+        {inCompare
+          ? (locale === 'es' ? 'En comparación' : 'In comparison')
+          : (locale === 'es' ? 'Comparar' : 'Compare')}
+      </button>
+    )
   }
 
   return (
@@ -32,20 +59,18 @@ export default function CompareButton({ propertyId, propertyTitle, className }: 
       onClick={handleClick}
       disabled={!inCompare && isFull}
       aria-label={inCompare ? 'Remove from compare' : 'Add to compare'}
-      title={!inCompare && isFull ? 'Compare limit reached (max 3)' : undefined}
       className={cn(
-        'flex h-8 w-8 items-center justify-center rounded-full bg-white/90 backdrop-blur-sm',
-        'shadow-sm transition-all duration-200 hover:scale-110',
-        'disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100',
+        'flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium',
+        'bg-white/95 shadow-sm backdrop-blur-sm transition-all duration-200',
+        'disabled:opacity-40 disabled:cursor-not-allowed',
+        inCompare
+          ? 'text-primary ring-1 ring-primary/40'
+          : 'text-neutral-600 hover:text-primary hover:ring-1 hover:ring-primary/30',
         className,
       )}
     >
-      <GitCompare
-        className={cn(
-          'h-4 w-4 transition-colors duration-200',
-          inCompare ? 'text-primary' : 'text-neutral-500',
-        )}
-      />
+      <GitCompare className="h-3.5 w-3.5 shrink-0" />
+      <span>{locale === 'es' ? 'Comparar' : 'Compare'}</span>
     </button>
   )
 }

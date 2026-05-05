@@ -53,16 +53,6 @@ export default function PropertyCard({
           </div>
         )}
 
-        {/* Badges overlay */}
-        <div className="absolute top-3 left-3 flex gap-1.5">
-          <Badge variant={property.type}>{typeLabels[property.type]}</Badge>
-          {property.featured && (
-            <Badge variant="featured">
-              {locale === 'es' ? 'Destacada' : 'Featured'}
-            </Badge>
-          )}
-        </div>
-
         {/* Action buttons overlay */}
         {(showFavoriteButton || showCompareButton) && (
           <div className="absolute top-3 right-3 flex gap-1.5">
@@ -70,7 +60,7 @@ export default function PropertyCard({
               <FavoriteButton slug={property.slug_en} />
             )}
             {showCompareButton && (
-              <CompareButton propertyId={property.id} propertyTitle={title} />
+              <CompareButton propertyId={property.id} propertyTitle={title} locale={locale} />
             )}
           </div>
         )}

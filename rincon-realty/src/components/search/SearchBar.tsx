@@ -71,41 +71,44 @@ export default function SearchBar({
   const selectClass = 'rounded-lg border border-neutral-300 bg-surface px-3 py-2.5 text-sm text-ink focus:outline-none focus:ring-2 focus:ring-primary transition-colors duration-200 min-w-0'
 
   return (
-    <div className="flex flex-col sm:flex-row gap-3 bg-surface rounded-xl p-4 shadow-lg border border-neutral-200">
-      {/* Type */}
-      <select id="sb-type" defaultValue={initialType} className={`${selectClass} flex-1`}>
-        {typeOptions.map((o) => (
-          <option key={o.value} value={o.value}>{o.label}</option>
-        ))}
-      </select>
+    <div className="bg-surface rounded-xl p-3 sm:p-4 shadow-lg border border-neutral-200">
+      {/* Mobile: 2x2 grid — Desktop: single row */}
+      <div className="grid grid-cols-2 sm:flex sm:flex-row gap-2 sm:gap-3">
+        {/* Type */}
+        <select id="sb-type" defaultValue={initialType} className={`${selectClass} col-span-1 sm:flex-1`}>
+          {typeOptions.map((o) => (
+            <option key={o.value} value={o.value}>{o.label}</option>
+          ))}
+        </select>
 
-      {/* Community */}
-      <select id="sb-community" defaultValue={initialCommunity} className={`${selectClass} flex-1`}>
-        <option value="">{locale === 'es' ? 'Todas las comunidades' : 'All communities'}</option>
-        {communities.map((c) => (
-          <option key={c.id} value={c.id}>
-            {localizedField(c, 'name', locale)}
-          </option>
-        ))}
-      </select>
+        {/* Community */}
+        <select id="sb-community" defaultValue={initialCommunity} className={`${selectClass} col-span-1 sm:flex-1`}>
+          <option value="">{locale === 'es' ? 'Comunidad' : 'Community'}</option>
+          {communities.map((c) => (
+            <option key={c.id} value={c.id}>
+              {localizedField(c, 'name', locale)}
+            </option>
+          ))}
+        </select>
 
-      {/* Price range */}
-      <select id="sb-price" defaultValue={initialPriceRange} className={`${selectClass} flex-1`}>
-        {PRICE_RANGES.map((r) => (
-          <option key={r.value} value={r.value}>
-            {locale === 'es' ? r.label_es : r.label_en}
-          </option>
-        ))}
-      </select>
+        {/* Price range */}
+        <select id="sb-price" defaultValue={initialPriceRange} className={`${selectClass} col-span-1 sm:flex-1`}>
+          {PRICE_RANGES.map((r) => (
+            <option key={r.value} value={r.value}>
+              {locale === 'es' ? r.label_es : r.label_en}
+            </option>
+          ))}
+        </select>
 
-      {/* Search button */}
-      <button
-        onClick={handleSearch}
-        className="flex items-center justify-center gap-2 rounded-lg bg-primary text-white px-6 py-2.5 text-sm font-medium hover:bg-primary/90 transition-colors duration-200 shrink-0"
-      >
-        <Search className="h-4 w-4" />
-        {locale === 'es' ? 'Buscar' : 'Search'}
-      </button>
+        {/* Search button */}
+        <button
+          onClick={handleSearch}
+          className="col-span-1 flex items-center justify-center gap-2 rounded-lg bg-primary text-white px-4 py-2.5 text-sm font-medium hover:bg-primary/90 transition-colors duration-200 sm:shrink-0 sm:px-6"
+        >
+          <Search className="h-4 w-4" />
+          <span className="sm:inline">{locale === 'es' ? 'Buscar' : 'Search'}</span>
+        </button>
+      </div>
     </div>
   )
 }

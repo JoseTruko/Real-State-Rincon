@@ -8,6 +8,7 @@ const trackSchema = z.object({
   agent_id:    z.string().uuid().optional(),
   name:        z.string().optional(),
   email:       z.string().email().optional(),
+  phone:       z.string().optional(),
 })
 
 export async function POST(request: NextRequest) {
@@ -19,7 +20,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'validation_error' }, { status: 400 })
     }
 
-    const { source, property_id, agent_id, name, email } = parsed.data
+    const { source, property_id, agent_id, name, email, phone } = parsed.data
 
     // 1. INSERT into contacts
     const { error: dbError } = await supabaseAdmin
@@ -27,6 +28,7 @@ export async function POST(request: NextRequest) {
       .insert({
         name:        name ?? 'Anonymous',
         email:       email ?? '',
+        phone:       phone ?? null,
         message:     '',
         source,
         property_id: property_id ?? null,

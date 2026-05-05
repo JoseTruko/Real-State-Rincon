@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { MapPin, Bed, Bath, Maximize2, Calendar, FileDown, MessageCircle } from 'lucide-react'
+import { MapPin, Bed, Bath, Maximize2, Calendar, FileDown } from 'lucide-react'
 import { getPropertyBySlug } from '@/lib/data/properties'
 import ImageGallery from '@/components/property/ImageGallery'
 import PropertyMap from '@/components/map/PropertyMap'
@@ -12,7 +12,7 @@ import WhatsAppButton from '@/components/property/WhatsAppButton'
 import Badge from '@/components/ui/Badge'
 import RichTextRenderer from '@/components/blog/RichTextRenderer'
 import { localizedField, formatPrice, formatArea } from '@/lib/utils/format'
-import { SITE_NAME, SITE_URL } from '@/config/site'
+import { SITE_URL } from '@/config/site'
 import { buildMetadata } from '@/lib/utils/metadata'
 import type { Locale } from '@/types'
 import type { Metadata } from 'next'
@@ -91,7 +91,7 @@ export default async function PropertyDetailPage({ params }: PropertyDetailProps
     />
     <div className="max-w-7xl mx-auto px-4 py-8">
       {/* Breadcrumb */}
-      <nav className="flex items-center gap-2 text-sm text-neutral-500 mb-6">
+      <nav className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-neutral-500 mb-3 sm:mb-6 overflow-hidden">
         <Link href={prefix || '/'} className="hover:text-primary transition-colors">
           {locale === 'es' ? 'Inicio' : 'Home'}
         </Link>
@@ -207,8 +207,8 @@ export default async function PropertyDetailPage({ params }: PropertyDetailProps
             SIDEBAR
         ============================================================ */}
         <aside className="flex flex-col gap-6">
-          {/* Sticky price + actions */}
-          <div className="sticky top-20 flex flex-col gap-4">
+          {/* Sticky sidebar with independent scroll */}
+          <div className="sticky top-20 flex flex-col gap-4 max-h-[calc(100vh-5rem)] overflow-y-auto pr-1">
             <div className="bg-surface border border-neutral-200 rounded-xl p-5">
               <p className="font-heading text-2xl font-bold text-primary mb-4">
                 {formatPrice(property.price_usd, locale)}
@@ -220,17 +220,20 @@ export default async function PropertyDetailPage({ params }: PropertyDetailProps
                 <CompareButton
                   propertyId={property.id}
                   propertyTitle={title}
-                  className="flex-1 h-10 rounded-lg"
+                  locale={locale}
+                  showLabel
+                  className="flex-1 h-10 px-3"
                 />
                 {/* PDF download */}
                 <a
                   href={`/api/properties/${property.id}/pdf?locale=${locale}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90 border border-neutral-200 hover:bg-neutral transition-colors"
+                  className="flex items-center gap-1.5 h-10 px-3 rounded-lg border border-neutral-200 bg-white hover:bg-neutral-50 transition-colors text-xs font-bold text-neutral-600 tracking-wide"
                   title={locale === 'es' ? 'Descargar PDF' : 'Download PDF'}
                 >
-                  <FileDown className="h-4 w-4 text-neutral-600" />
+                  <FileDown className="h-3.5 w-3.5" />
+                  PDF
                 </a>
               </div>
 

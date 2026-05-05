@@ -131,7 +131,7 @@ export default function SellWithUsPage({ params }: { params: { locale: string } 
             {locale === 'es' ? 'Cuéntanos sobre tu propiedad' : 'Tell us about your property'}
           </h2>
           <div className="bg-surface border border-neutral-200 rounded-xl p-6">
-            <ContactForm locale={locale} source="form" />
+            <ContactForm locale={locale} source="seller" />
           </div>
         </div>
       </section>

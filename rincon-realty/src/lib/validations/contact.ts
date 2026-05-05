@@ -8,7 +8,7 @@ export const contactSchema = z.object({
   honeypot:    z.string().max(0, 'Bot detected').optional(),
   property_id: z.string().uuid().optional(),
   agent_id:    z.string().uuid().optional(),
-  source:      z.enum(['form', 'whatsapp', 'email_reveal']),
+  source:      z.enum(['form', 'whatsapp', 'email_reveal', 'seller']),
 })
 
 export type ContactFormData = z.infer<typeof contactSchema>

@@ -7,7 +7,7 @@ export type Locale = 'en' | 'es'
 export type PropertyType     = 'house' | 'land' | 'farm'
 export type PropertyStatus   = 'draft' | 'published'
 export type BlogStatus       = 'draft' | 'published'
-export type ContactSource    = 'form' | 'whatsapp' | 'email_reveal'
+export type ContactSource    = 'form' | 'whatsapp' | 'email_reveal' | 'seller'
 export type ContactStatus    = 'new' | 'contacted' | 'closed'
 export type CommissionStatus = 'none' | 'pending' | 'confirmed' | 'paid'
 

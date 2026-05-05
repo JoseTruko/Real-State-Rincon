@@ -22,9 +22,14 @@ const COMMISSION_LABELS: Record<CommissionStatus, string> = {
 }
 
 const SOURCE_LABELS: Record<string, string> = {
-  form: 'Formulario',
-  whatsapp: 'WhatsApp',
+  form:         'Formulario',
+  whatsapp:     'WhatsApp',
   email_reveal: 'Email reveal',
+  seller:       'Vendedor',
+}
+
+const SOURCE_COLORS: Record<string, string> = {
+  seller: 'bg-orange-100 text-orange-700',
 }
 
 const STATUS_COLORS: Record<ContactStatus, string> = {
@@ -77,7 +82,7 @@ export default function LeadsTable({ leads }: LeadsTableProps) {
                 ) : '—'}
               </td>
               <td className="px-4 py-3">
-                <span className="px-2 py-0.5 rounded bg-neutral-100 text-neutral-600 text-xs">
+                <span className={`px-2 py-0.5 rounded text-xs font-medium ${SOURCE_COLORS[lead.source] ?? 'bg-neutral-100 text-neutral-600'}`}>
                   {SOURCE_LABELS[lead.source] ?? lead.source}
                 </span>
               </td>
