@@ -208,7 +208,7 @@ export default async function PropertyDetailPage({ params }: PropertyDetailProps
         ============================================================ */}
         <aside className="flex flex-col gap-6">
           {/* Sticky sidebar with independent scroll */}
-          <div className="sticky top-20 flex flex-col gap-4 max-h-[calc(100vh-5rem)] overflow-y-auto pr-1">
+          <div className="flex flex-col gap-4 lg:sticky lg:top-20 lg:max-h-[calc(100vh-5rem)] lg:overflow-y-auto lg:pr-1">
             <div className="bg-surface border border-neutral-200 rounded-xl p-5">
               <p className="font-heading text-2xl font-bold text-primary mb-4">
                 {formatPrice(property.price_usd, locale)}
