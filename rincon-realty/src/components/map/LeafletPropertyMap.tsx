@@ -21,14 +21,19 @@ export default function LeafletPropertyMap({ coordinates, title, zoom = 14, show
       version: 'weekly',
     })
 
-    const center = { lat, lng }
-
-    loader.load().then(() => {
+    async function init() {
+      await loader.load()
       if (!mapRef.current) return
 
-      const map = new google.maps.Map(mapRef.current, {
+      const center = { lat, lng }
+
+      const { Map } = await google.maps.importLibrary('maps') as google.maps.MapsLibrary
+      const { AdvancedMarkerElement } = await google.maps.importLibrary('marker') as google.maps.MarkerLibrary
+
+      const map = new Map(mapRef.current, {
         center,
         zoom,
+        mapId: 'DEMO_MAP_ID',
         scrollwheel: false,
         gestureHandling: 'cooperative',
         mapTypeControl: false,
@@ -36,11 +41,7 @@ export default function LeafletPropertyMap({ coordinates, title, zoom = 14, show
         fullscreenControl: false,
       })
 
-      new google.maps.Marker({
-        map,
-        position: center,
-        title,
-      })
+      new AdvancedMarkerElement({ map, position: center, title })
 
       if (showApproximateCircle) {
         new google.maps.Circle({
@@ -54,7 +55,9 @@ export default function LeafletPropertyMap({ coordinates, title, zoom = 14, show
           fillOpacity: 0.1,
         })
       }
-    })
+    }
+
+    init()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
