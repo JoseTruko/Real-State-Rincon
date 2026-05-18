@@ -1,17 +1,25 @@
 import { cn } from '@/lib/utils/cn'
 
 interface RichTextRendererProps {
-  content: string // HTML string from Tiptap
+  content: string
   className?: string
 }
 
-/**
- * Renders Tiptap HTML content safely with Tailwind typography styles.
- * Content is sanitized server-side before storage; this component
- * only renders trusted content from the admin dashboard.
- */
+const isHtml = (str: string) => /<[a-z][\s\S]*>/i.test(str)
+
 export default function RichTextRenderer({ content, className }: RichTextRendererProps) {
   if (!content) return null
+
+  // Plain text (legacy descriptions saved before Tiptap editor was added)
+  if (!isHtml(content)) {
+    return (
+      <p
+        className={cn('text-neutral-600 leading-relaxed whitespace-pre-wrap', className)}
+      >
+        {content}
+      </p>
+    )
+  }
 
   return (
     <div

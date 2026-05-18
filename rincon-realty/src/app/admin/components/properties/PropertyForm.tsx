@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import Image from 'next/image'
 import { createProperty, updateProperty, addPropertyImage, deletePropertyImage } from '@/app/admin/actions/properties'
 import { generateSlug } from '@/lib/utils/slug'
@@ -9,6 +9,7 @@ import Input from '@/components/ui/Input'
 import Button from '@/components/ui/Button'
 import ImageUpload from '@/app/admin/components/ImageUpload'
 import MapPickerWrapper from '@/components/map/MapPickerWrapper'
+import TiptapEditor from '@/app/admin/components/TiptapEditor'
 import type { Property, Community, Agent, PropertyImage } from '@/types'
 
 interface PropertyFormProps {
@@ -79,6 +80,7 @@ export default function PropertyForm({ property, communities, agents }: Property
     handleSubmit,
     watch,
     setValue,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
     defaultValues: {
@@ -211,10 +213,17 @@ export default function PropertyForm({ property, communities, agents }: Property
               <label className="text-sm font-medium text-ink">
                 {field === 'description_en' ? 'Descripción EN *' : 'Descripción ES *'}
               </label>
-              <textarea
-                rows={5}
-                className="rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-                {...register(field, { required: 'Requerido' })}
+              <Controller
+                name={field}
+                control={control}
+                rules={{ required: 'Requerido' }}
+                render={({ field: f }) => (
+                  <TiptapEditor
+                    value={f.value}
+                    onChange={f.onChange}
+                    placeholder={field === 'description_en' ? 'Property description in English…' : 'Descripción de la propiedad en español…'}
+                  />
+                )}
               />
               {errors[field] && (
                 <p className="text-xs text-red-600">{errors[field]?.message}</p>

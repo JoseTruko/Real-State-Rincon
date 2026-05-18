@@ -24,10 +24,10 @@ export default function Navbar() {
   const prefix = locale === 'es' ? '/es' : ''
 
   const navLinks = [
-    { href: `${prefix}/properties`,  label: locale === 'es' ? 'Propiedades' : 'Properties' },
-    { href: `${prefix}/communities`, label: locale === 'es' ? 'Comunidades' : 'Communities' },
-    { href: `${prefix}/agents`,      label: locale === 'es' ? 'Agentes' : 'Agents' },
-    { href: `${prefix}/blog`,        label: 'Blog' },
+    { href: prefix || '/',            label: locale === 'es' ? 'Inicio' : 'Home' },
+    { href: `${prefix}/properties`,   label: locale === 'es' ? 'Propiedades' : 'Properties' },
+    { href: `${prefix}/communities`,  label: locale === 'es' ? 'Comunidades' : 'Communities' },
+    { href: `${prefix}/agents`,       label: locale === 'es' ? 'Agentes' : 'Agents' },
     { href: `${prefix}/sell-with-us`, label: locale === 'es' ? 'Vender' : 'Sell with us' },
   ]
 
