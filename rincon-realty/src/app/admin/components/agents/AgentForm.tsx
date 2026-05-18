@@ -109,13 +109,13 @@ export default function AgentForm({ agent }: AgentFormProps) {
 
       <section className="bg-white rounded-xl border border-neutral-200 p-6 space-y-4">
         <h2 className="font-heading font-semibold text-ink">Información personal</h2>
-        <div className="flex gap-6">
+        <div className="flex flex-col sm:flex-row gap-6">
           <ImageUpload
             bucket="agent-photos"
             onUpload={setPhotoUrl}
             currentUrl={photoUrl}
             label="Foto"
-            className="w-40 shrink-0"
+            className="sm:w-40 sm:shrink-0"
           />
           <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input

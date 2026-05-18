@@ -130,9 +130,9 @@ export default function PropertyForm({ property, communities, agents }: Property
     setServerError('')
     const formData = new FormData()
 
-    // Append all scalar fields
+    // Append all scalar fields (skip null, undefined, and NaN from empty number inputs)
     Object.entries(values).forEach(([key, val]) => {
-      if (val !== null && val !== undefined) {
+      if (val !== null && val !== undefined && !(typeof val === 'number' && Number.isNaN(val))) {
         formData.append(key, String(val))
       }
     })
@@ -146,8 +146,13 @@ export default function PropertyForm({ property, communities, agents }: Property
       ? await updateProperty(property!.id, formData)
       : await createProperty(formData)
 
-    if (result?.error && '_form' in result.error) {
-      setServerError(result.error._form?.[0] ?? 'Error desconocido')
+    if (result?.error) {
+      if ('_form' in result.error) {
+        setServerError(result.error._form?.[0] ?? 'Error desconocido')
+      } else {
+        const firstField = Object.values(result.error as Record<string, string[]>)[0]
+        setServerError(firstField?.[0] ?? 'Error de validación')
+      }
     }
   }
 

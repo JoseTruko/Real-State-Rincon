@@ -15,6 +15,7 @@ interface TiptapEditorProps {
 
 export default function TiptapEditor({ value, onChange, placeholder, className }: TiptapEditorProps) {
   const editor = useEditor({
+    immediatelyRender: false,
     extensions: [
       StarterKit,
       Link.configure({ openOnClick: false }),
