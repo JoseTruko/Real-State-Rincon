@@ -191,3 +191,24 @@ export async function deletePropertyImage(imageId: string, url: string) {
 
   return { success: true }
 }
+
+export async function updatePropertyImageSortOrder(
+  propertyId: string,
+  imageIds: string[],
+) {
+  // Update sort_order for each image based on its position in the array
+  const updates = imageIds.map((id, index) => ({
+    id,
+    sort_order: index,
+  }))
+
+  for (const { id, sort_order } of updates) {
+    await supabaseAdmin
+      .from('property_images')
+      .update({ sort_order })
+      .eq('id', id)
+  }
+
+  revalidatePath(`/admin/properties/${propertyId}`)
+  return { success: true }
+}

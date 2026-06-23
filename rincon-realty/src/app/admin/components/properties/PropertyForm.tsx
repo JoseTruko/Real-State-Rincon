@@ -8,6 +8,7 @@ import { generateSlug } from '@/lib/utils/slug'
 import Input from '@/components/ui/Input'
 import Button from '@/components/ui/Button'
 import ImageUpload from '@/app/admin/components/ImageUpload'
+import ImageGalleryManager from '@/app/admin/components/properties/ImageGalleryManager'
 import MapPickerWrapper from '@/components/map/MapPickerWrapper'
 import TiptapEditor from '@/app/admin/components/TiptapEditor'
 import type { Property, Community, Agent, PropertyImage } from '@/types'
@@ -381,30 +382,18 @@ export default function PropertyForm({ property, communities, agents }: Property
         <section className="bg-white rounded-xl border border-neutral-200 p-6 space-y-4">
           <h2 className="font-heading font-semibold text-ink">Imágenes</h2>
 
-          {images.length > 0 && (
-            <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
-              {images.map((img) => (
-                <div key={img.id} className="relative group">
-                  <div className="relative h-28 rounded-lg overflow-hidden border border-neutral-200">
-                    <Image src={img.url} alt={img.alt_text} fill className="object-cover" />
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => handleDeleteImage(img)}
-                    className="absolute top-1 right-1 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                  >
-                    ✕
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
+          <ImageGalleryManager
+            images={images}
+            onDeleteImage={handleDeleteImage}
+            onSortOrderChanged={setImages}
+            propertyId={property!.id}
+          />
 
           <ImageUpload
             bucket="property-images"
             folder={property?.id}
             onUpload={handleNewImage}
-            label="Agregar imagen"
+            label="Agregar nueva imagen"
           />
           {uploadingImage && <p className="text-sm text-neutral-500">Guardando...</p>}
         </section>
