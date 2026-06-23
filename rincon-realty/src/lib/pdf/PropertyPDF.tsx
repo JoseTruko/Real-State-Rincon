@@ -4,6 +4,40 @@ import { SITE_NAME } from '@/config/site'
 import { localizedField, formatPrice, formatArea } from '@/lib/utils/format'
 import type { Property, Locale } from '@/types'
 
+/**
+ * Cleans HTML content to extract plain text for PDF rendering
+ * Converts <p> and <br> to line breaks, removes all HTML tags
+ */
+function cleanHtmlContent(html: string): string {
+  if (!html) return ''
+  
+  // Replace closing </p> tags with newlines
+  let cleaned = html.replace(/<\/p>/gi, '\n')
+  
+  // Replace opening <p> tags with nothing (they're just wrappers)
+  cleaned = cleaned.replace(/<p[^>]*>/gi, '')
+  
+  // Replace <br> and <br/> and <br /> with newlines
+  cleaned = cleaned.replace(/<br\s*\/?>/gi, '\n')
+  
+  // Remove all other HTML tags
+  cleaned = cleaned.replace(/<[^>]*>/g, '')
+  
+  // Decode HTML entities
+  cleaned = cleaned
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+  
+  // Clean up multiple consecutive newlines
+  cleaned = cleaned.replace(/\n\n+/g, '\n')
+  
+  return cleaned.trim()
+}
+
 const styles = StyleSheet.create({
   page: {
     fontFamily: 'Helvetica',
@@ -229,7 +263,23 @@ export function PropertyPDF({ property, locale }: PropertyPDFProps) {
             <Text style={styles.sectionTitle}>
               {locale === 'es' ? 'Descripción' : 'Description'}
             </Text>
-            <Text style={styles.description}>{description}</Text>
+            <View>
+              {cleanHtmlContent(description)
+                .split('\n')
+                .map((line, index) => (
+                  line.trim() && (
+                    <Text
+                      key={index}
+                      style={{
+                        ...styles.description,
+                        marginBottom: 8,
+                      }}
+                    >
+                      {line}
+                    </Text>
+                  )
+                ))}
+            </View>
           </View>
         )}
 

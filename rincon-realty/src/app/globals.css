@@ -26,3 +26,15 @@
     text-wrap: balance;
   }
 }
+
+/* Leaflet z-index adjustments to prevent overlap with header */
+.leaflet-popup,
+.leaflet-tooltip,
+.leaflet-control {
+  z-index: 40 !important;
+}
+
+.leaflet-popup-pane,
+.leaflet-tooltip-pane {
+  z-index: 40 !important;
+}

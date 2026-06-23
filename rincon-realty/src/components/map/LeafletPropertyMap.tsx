@@ -34,7 +34,7 @@ export default function LeafletPropertyMap({ coordinates, title, zoom = 14, show
       <MapContainer
         center={[lat, lng]}
         zoom={zoom}
-        className="w-full h-64 rounded-xl overflow-hidden"
+        className="w-full h-64 rounded-xl overflow-hidden z-0"
         scrollWheelZoom={false}
       >
         <TileLayer
