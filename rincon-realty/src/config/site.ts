@@ -5,7 +5,7 @@ import type { SiteConfig } from '@/types'
 // ============================================================
 export const SITE_NAME = 'Rincón Realty'
 
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.rinconrealty.com'
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.rinconrealtycr.com'
 
 export const SITE_CONFIG_DEFAULTS: SiteConfig = {
   site_name:           SITE_NAME,

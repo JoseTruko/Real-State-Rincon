@@ -8,18 +8,36 @@ import { getAllPublishedPosts } from '@/lib/data/blog'
 type Entry = MetadataRoute.Sitemap[number]
 
 const STATIC: Array<{ en: string; es: string }> = [
-  { en: '',               es: ''               },
-  { en: '/properties',    es: '/properties'    },
-  { en: '/communities',   es: '/communities'   },
-  { en: '/agents',        es: '/agents'        },
-  { en: '/blog',          es: '/blog'          },
-  { en: '/sell-with-us',  es: '/sell-with-us'  },
-  { en: '/contact',       es: '/contact'       },
+  { en: '/', es: '/es' },
+  { en: '/properties', es: '/es/properties' },
+  { en: '/communities', es: '/es/communities' },
+  { en: '/agents', es: '/es/agents' },
+  { en: '/blog', es: '/es/blog' },
+  { en: '/sell-with-us', es: '/es/sell-with-us' },
+  { en: '/contact', es: '/es/contact' },
 ]
 
-function alt(enUrl: string, esUrl: string) {
-  return { languages: { en: enUrl, es: esUrl, 'x-default': enUrl } }
+export function buildCanonicalUrl(baseUrl: string, path: string): string {
+  const normalizedBase = baseUrl.replace(/\/+$/, '')
+  if (!path || path === '/') {
+    return normalizedBase
+  }
+
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`
+  return `${normalizedBase}${normalizedPath}`
 }
+
+function alt(enPath: string, esPath: string) {
+  return {
+    languages: {
+      en: buildCanonicalUrl(SITE_URL, enPath),
+      es: buildCanonicalUrl(SITE_URL, esPath),
+      'x-default': buildCanonicalUrl(SITE_URL, enPath),
+    },
+  }
+}
+
+export const revalidate = 3600
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [properties, communities, agents, posts] = await Promise.all([
@@ -30,41 +48,42 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ])
 
   const staticEntries: Entry[] = STATIC.map(({ en, es }) => ({
-    url:        `${SITE_URL}${en}`,
-    alternates: alt(`${SITE_URL}${en}`, `${SITE_URL}/es${es}`),
+    url: buildCanonicalUrl(SITE_URL, en),
+    lastModified: new Date(),
+    alternates: alt(en, es),
   }))
 
   const propertyEntries: Entry[] = properties.map((p) => ({
-    url:          `${SITE_URL}/properties/${p.slug_en}`,
+    url: buildCanonicalUrl(SITE_URL, `/properties/${p.slug_en}`),
     lastModified: p.updated_at,
-    alternates:   alt(
-      `${SITE_URL}/properties/${p.slug_en}`,
-      `${SITE_URL}/es/properties/${p.slug_es}`,
+    alternates: alt(
+      `/properties/${p.slug_en}`,
+      `/es/properties/${p.slug_es}`,
     ),
   }))
 
   const communityEntries: Entry[] = communities.map((c) => ({
-    url:        `${SITE_URL}/communities/${c.slug}`,
+    url: buildCanonicalUrl(SITE_URL, `/communities/${c.slug}`),
     alternates: alt(
-      `${SITE_URL}/communities/${c.slug}`,
-      `${SITE_URL}/es/communities/${c.slug}`,
+      `/communities/${c.slug}`,
+      `/es/communities/${c.slug}`,
     ),
   }))
 
   const agentEntries: Entry[] = agents.map((a) => ({
-    url:        `${SITE_URL}/agents/${a.slug}`,
+    url: buildCanonicalUrl(SITE_URL, `/agents/${a.slug}`),
     alternates: alt(
-      `${SITE_URL}/agents/${a.slug}`,
-      `${SITE_URL}/es/agents/${a.slug}`,
+      `/agents/${a.slug}`,
+      `/es/agents/${a.slug}`,
     ),
   }))
 
   const postEntries: Entry[] = posts.map((p) => ({
-    url:          `${SITE_URL}/blog/${p.slug_en}`,
+    url: buildCanonicalUrl(SITE_URL, `/blog/${p.slug_en}`),
     lastModified: p.published_at ?? undefined,
-    alternates:   alt(
-      `${SITE_URL}/blog/${p.slug_en}`,
-      `${SITE_URL}/es/blog/${p.slug_es}`,
+    alternates: alt(
+      `/blog/${p.slug_en}`,
+      `/es/blog/${p.slug_es}`,
     ),
   }))
 

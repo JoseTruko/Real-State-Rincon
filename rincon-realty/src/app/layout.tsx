@@ -7,6 +7,7 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-body', display: 'swa
 const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-heading', display: 'swap' })
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.rinconrealtycr.com'),
   title: { default: SITE_NAME, template: `%s | ${SITE_NAME}` },
   description: 'Luxury real estate in Guanacaste & Rincón de la Vieja, Costa Rica.',
 }
